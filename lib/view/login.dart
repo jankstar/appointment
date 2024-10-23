@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/login_bloc.dart';
 import '../bloc/login_event.dart';
 import '../bloc/login_state.dart';
+import '../repository/lib_repository.dart';
 
 class LoginDialog extends StatefulWidget {
   const LoginDialog({super.key});
@@ -69,7 +70,7 @@ class _LoginDialogState extends State<LoginDialog> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      print('username: ${_usernameController.text}');
+      LibRepository().getLogger().e('username: ${_usernameController.text}');
       context.read<LoginBloc>().add(DoLoginEvent(_usernameController.text, _passwordController.text)); // do login
     }
   }

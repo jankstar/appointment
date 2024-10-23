@@ -5,6 +5,7 @@ import 'login_event.dart';
 import 'login_state.dart';
 
 import '../repository/api_repository.dart';
+import '../repository/lib_repository.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final ApiRepository api_repository; // Ihre Datenbankinstanz
@@ -23,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       //print('Login successful: $data');
       emit(LoggedIn(tokenData, meData));
     } catch (e) {
-      print('Login failed: $e');
+      LibRepository().getLogger().e('Login failed: $e');
       emit(LoginError(e.toString()));
     }
   }

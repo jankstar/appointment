@@ -1,0 +1,12 @@
+{
+  "@@locale": "de",
+  "logout": "Logout",
+  "exit": "Exit",
+
+  "confirmation": "Bestätigung",
+  "exitConfirmation": "Wollen Sie die Anwendung beenden?",
+  "exitApplication": "Anwendung beenden",
+  "exitApplicationHint": "Bitte schließen Sie diesen Browser-Tab, um die Anwendung zu beenden.",
+  "ok": "OK",
+  "cancel": "Abbrechen"
+}

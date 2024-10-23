@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:appointment/bloc/login_event.dart';
 import 'package:appointment/repository/api_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'view/login.dart';
 import 'repository/lib_repository.dart';
@@ -16,11 +18,11 @@ import 'bloc/login_state.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   // This widget is the root of your application.
   @override
@@ -29,6 +31,16 @@ class MyApp extends StatelessWidget {
         create: (context) => LoginBloc(ApiRepository()),
         child: MaterialApp(
           title: 'Thunderbird Pro Appointment',
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en', ''), // Englisch
+            Locale('de', ''), // Deutsch
+          ],
           theme: ThemeData(
             // This is the theme of your application.
             //
@@ -48,13 +60,13 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellowAccent),
             useMaterial3: true,
           ),
-          home: const MyHomePage(title: 'Appointment'),
+          home: const Home(title: 'Appointment'),
         ));
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class Home extends StatefulWidget {
+  const Home({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -68,10 +80,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeState extends State<Home> {
   var emailLogin = '';
   var passwordLogin = '';
 
@@ -83,53 +95,48 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-          // TRY THIS: Try changing the color here to a specific color (to
-          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-          // change color while the other colors stay the same.
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-            if (state is LoggedIn) return Text('${state.me.name}');
-            return Text(widget.title);
-          }),
-          actions: [
-            BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-              if (state is LoggedIn) {
-                return IconButton(
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return Scaffold(
+        appBar: AppBar(
+            // TRY THIS: Try changing the color here to a specific color (to
+            // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+            // change color while the other colors stay the same.
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            // Here we take the value from the Home object that was created by
+            // the App.build method, and use it to set our appbar title.
+            title: state is LoggedIn ? Text('Hi, ${state.me.name}') : Text(widget.title),
+            actions: [
+              if (state is LoggedIn)
+                IconButton(
                   icon: const Icon(Icons.logout),
-                  tooltip: 'Logout',
+                  tooltip: AppLocalizations.of(context)!.logout, // 'Logout',
                   onPressed: () => context.read<LoginBloc>().add(DoLogoutEvent(state.token.access_token)),
-                );
-              }
-              return IconButton(
-                icon: const Icon(Icons.exit_to_app),
-                tooltip: 'Exit',
-                onPressed: () async => _goExit(),
-              );
-            }),
-          ]),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-          if (state is LoggedIn) {
-            return Text(state.me.toString());
-          }
-          return const LoginDialog();
-        }),
-      ),
-    );
+                )
+              else
+                IconButton(
+                  icon: const Icon(Icons.exit_to_app),
+                  tooltip: AppLocalizations.of(context)!.exit, // 'Beenden',
+                  onPressed: () async => _goExit(),
+                )
+            ]),
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: state is LoggedIn ? Text(state.me.toString()) : const LoginDialog(),
+        ),
+      );
+    });
   }
 
   void _goExit() async {
-    var answer = await LibRepository().showOkCancelDialog(context, 'Bestätigung', 'Wollen Sie die Anwendung beenden?');
+    var answer = await LibRepository().showOkCancelDialog(
+        context,
+        AppLocalizations.of(context)!.confirmation,      //'Bestätigung',
+        AppLocalizations.of(context)!.exitConfirmation); //'Wollen Sie die Anwendung beenden?');
     if (answer == true) {
       if (kIsWeb) {
         // ignore: use_build_context_synchronously
-        LibRepository().showEndDialog(context);
+        LibRepository().showEndWebDialog(context);
       } else if (Platform.isAndroid) {
         SystemNavigator.pop();
       } else {

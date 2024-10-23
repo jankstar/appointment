@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../models/models.dart';
+import '../repository/lib_repository.dart';
 
 class ApiRepository {
   /// doLogin
@@ -35,7 +36,7 @@ class ApiRepository {
       //body: { 'username': username, 'password': password },
     );
 
-    print('Me: ${response.statusCode} body: ${response.body}');
+    LibRepository().getLogger().e('Me: ${response.statusCode} body: ${response.body}');
     if (response.statusCode == 200) {
       // JSON-Antwort in ein Dart-Objekt umwandeln
       return Me.fromJson(json.decode(response.body));
