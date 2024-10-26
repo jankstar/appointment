@@ -8,5 +8,11 @@
   "exitApplication": "Exit the application",
   "exitApplicationHint": "Please close this browser tab to exit the application.",
   "ok": "OK",
-  "cancel": "Cancel"  
+  "cancel": "Cancel",
+  "save": "Save",  
+
+  "language": "Language",
+  "theme": "Theme"
+
+
 }

@@ -8,5 +8,10 @@
   "exitApplication": "Anwendung beenden",
   "exitApplicationHint": "Bitte schließen Sie diesen Browser-Tab, um die Anwendung zu beenden.",
   "ok": "OK",
-  "cancel": "Abbrechen"
+  "cancel": "Abbrechen",
+  "save": "Sichern",
+
+  "language": "Sprache",
+  "theme": "Theme"
+
 }

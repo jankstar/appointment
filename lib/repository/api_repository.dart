@@ -41,7 +41,7 @@ class ApiRepository {
       // JSON-Antwort in ein Dart-Objekt umwandeln
       return Me.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to login');
+      throw Exception('Failed to get me data');
     }
   }
 
@@ -58,7 +58,7 @@ class ApiRepository {
       // JSON-Antwort in ein Dart-Objekt umwandeln
       return;
     } else {
-      throw Exception('Failed to login');
+      throw Exception('Failed to logout');
     }
   }
 }

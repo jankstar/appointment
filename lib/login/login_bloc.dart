@@ -10,7 +10,7 @@ import '../repository/lib_repository.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final ApiRepository api_repository; // Ihre Datenbankinstanz
 
-  LoginBloc(this.api_repository) : super(LoginInitial()) {
+  LoginBloc(this.api_repository) : super(LoginLoading()) {
     on<DoLoginEvent>(_onLogin);
     on<DoLogoutEvent>(_onLogout);
   }

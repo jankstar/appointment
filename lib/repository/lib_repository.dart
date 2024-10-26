@@ -1,3 +1,4 @@
+import 'package:appointment/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -23,14 +24,14 @@ class LibRepository {
           actions: <Widget>[
             TextButton(
               style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.red.shade100)),
-              child:  Text(AppLocalizations.of(context)!.cancel), // 'Abbruch'
+              child: Text(AppLocalizations.of(context)!.cancel), // 'Abbruch'
               onPressed: () {
                 Navigator.of(context).pop(false); // Schließt den Dialog
               },
             ),
             TextButton(
               style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.green.shade100)),
-              child:  Text(AppLocalizations.of(context)!.ok), // 'Ok'
+              child: Text(AppLocalizations.of(context)!.ok), // 'Ok'
               onPressed: () {
                 Navigator.of(context).pop(true); // Schließt den Dialog
               },
@@ -45,8 +46,8 @@ class LibRepository {
     showDialog(
       context: context,
       barrierDismissible: false, // Der Dialog kann nicht durch Tippen außerhalb geschlossen werden
-      builder: (context) =>  AlertDialog(
-        title: Text(AppLocalizations.of(context)!.exitApplication),       // 'Anwendung beenden',
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.exitApplication), // 'Anwendung beenden',
         content: Text(AppLocalizations.of(context)!.exitApplicationHint), //'Bitte schließen Sie diesen Browser-Tab, um die Anwendung zu beenden.'
         actions: const [
           //TextButton(
@@ -71,4 +72,17 @@ class LibRepository {
         ), // Use the PrettyPrinter to format and print log
         output: null, // Use the default LogOutput (-> send everything to console)
       );
+
+  var _setting = const Setting('en', ThemeMode.system);
+
+  Future<Setting> loadSetting() async {
+    getLogger().i('loadSetting ${_setting.langu} ${_setting.themeMode}');  
+    return _setting;
+  }
+
+  Future<Setting> saveSetting(Setting setting) async {
+    _setting = setting;
+    getLogger().i('saveSetting ${setting.langu} ${setting.themeMode}');  
+    return _setting;
+  }
 }
