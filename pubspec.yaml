@@ -44,6 +44,8 @@ dependencies:
   intl_translation: ^0.20.0
   intl: any
   logger: ^2.4.0
+  shared_preferences: ^2.3.2
+  timezone: ^0.9.4
 
 
 dev_dependencies:

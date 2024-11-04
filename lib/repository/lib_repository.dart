@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:appointment/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// library for general functions
 class LibRepository {
@@ -73,16 +76,41 @@ class LibRepository {
         output: null, // Use the default LogOutput (-> send everything to console)
       );
 
+// Create storage
+  SharedPreferences? _prefs;
   var _setting = const Setting('en', ThemeMode.system);
 
   Future<Setting> loadSetting() async {
-    getLogger().i('loadSetting ${_setting.langu} ${_setting.themeMode}');  
+    try {
+      // Obtain shared preferences.
+      _prefs ??= await SharedPreferences.getInstance();
+      String? value = _prefs?.getString('settings');
+
+      if (value != null) {
+        _setting = Setting.fromJson(jsonDecode(value));
+      }
+    } catch (e) {
+      getLogger().d('loadSetting ${e.toString()}');
+      if (_prefs != null) {
+        await _prefs?.remove('settings'); //im Falle eines Fehlers den Speicher leeren
+      }
+    }
+
     return _setting;
   }
 
   Future<Setting> saveSetting(Setting setting) async {
     _setting = setting;
-    getLogger().i('saveSetting ${setting.langu} ${setting.themeMode}');  
+    try {
+      _prefs ??= await SharedPreferences.getInstance();
+
+      _prefs?.setString('settings', jsonEncode(setting.toJson()));
+    } catch (e) {
+      getLogger().d('saveSetting ${e.toString()}');
+      if (_prefs != null) {
+        await _prefs?.remove('settings'); //im Falle eines Fehlers den Speicher leeren
+      }
+    }
     return _setting;
   }
 }

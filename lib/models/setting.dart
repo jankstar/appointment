@@ -14,12 +14,19 @@ class Setting extends Equatable {
   final ThemeMode themeMode;
 
   @override
-  List<Object> get props => [langu];
+  List<Object> get props => [langu, themeMode];
+
+  Setting copyWith({String? langu, ThemeMode? themeMode}) {
+    return Setting(
+      langu ?? this.langu,
+      themeMode ?? this.themeMode,
+    );
+  }
 
   @override
   toString() => 'Setting { langu: $langu, themeMode: $themeMode }';
 
-  static const empty = Setting('de', ThemeMode.system);
+  static const empty = Setting('en', ThemeMode.system);
 
   factory Setting.fromJson(Map<String, dynamic> json) => _$SettingFromJson(json);
 

@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
+  "login": "Login",
   "logout": "Logout",
   "exit": "Exit",
 
@@ -9,10 +10,11 @@
   "exitApplicationHint": "Please close this browser tab to exit the application.",
   "ok": "OK",
   "cancel": "Cancel",
-  "save": "Save",  
 
+  "settings": "Settings",
   "language": "Language",
-  "theme": "Theme"
-
-
+  "theme": "Theme",
+  "timezone": "Timezone",
+  "save": "Save"
+  
 }

@@ -81,37 +81,45 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       return Scaffold(
-        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.inversePrimary, title: state is LoggedIn ? Text('Hi, ${state.me.name}') : Text(widget.title), actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            tooltip: AppLocalizations.of(context)!.logout, // 'Logout',
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SettingsDialog(),
-                  //settings: RouteSettings(
-                  //  arguments: null,
-                  //),
-                ),
+        appBar: AppBar(
+            //
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: state is LoggedIn ? Text('Hi, ${state.me.name}') : Text(widget.title),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.settings),
+                tooltip: AppLocalizations.of(context)!.settings, // 'Settings',
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingsDialog(),
+                      //settings: RouteSettings(
+                      //  arguments: null,
+                      //),
+                    ),
+                  ),
+                },
               ),
-            },
-          ),
-          if (state is LoggedIn)
-            IconButton(
-              icon: const Icon(Icons.logout),
-              tooltip: AppLocalizations.of(context)!.logout, // 'Logout',
-              onPressed: () => context.read<LoginBloc>().add(DoLogoutEvent(state.token.access_token)),
-            )
-          else
-            IconButton(
-              icon: const Icon(Icons.exit_to_app),
-              tooltip: AppLocalizations.of(context)!.exit, // 'Beenden',
-              onPressed: () async => _goExit(),
-            )
-        ]),
+              if (state is LoggedIn)
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  tooltip: AppLocalizations.of(context)!.logout, // 'Logout',
+                  onPressed: () => context.read<LoginBloc>().add(DoLogoutEvent(state.token.access_token)),
+                )
+              else
+                IconButton(
+                  icon: const Icon(Icons.exit_to_app),
+                  tooltip: AppLocalizations.of(context)!.exit, // 'Beenden',
+                  onPressed: () async => _goExit(),
+                )
+            ]),
         body: Center(
-          child: state is LoggedIn ? Text(state.me.toString()) : const LoginDialog(),
+          child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  state is LoggedIn ? Text(state.me.toString()) : const LoginDialog(), 
+                  state is LoginError ? Text(state.error,style: const TextStyle(color: Colors.redAccent)) : const Text(''),]),
         ),
       );
     });
