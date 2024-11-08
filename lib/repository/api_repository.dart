@@ -46,7 +46,8 @@ class ApiRepository {
       // JSON-Antwort in ein Dart-Objekt umwandeln
       return Me.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to get me data');
+      var lfDetail = json.decode(response.body)['detail'] as String;
+      throw Exception('Failed to get me data  - $lfDetail');
     }
   }
 
@@ -54,10 +55,10 @@ class ApiRepository {
     String bearerAuth = 'Bearer $token';
 
     final Map<String, dynamic> body = {
-      'username': me.username ?? '',
-      'name': me.name ?? '',
-      'avatar_url': me.avatar_url ?? '',
-      'secondary_email': me.secondary_email ?? '',
+      'username': me.username,
+      'name': me.name,
+      'avatar_url': me.avatar_url,
+      'secondary_email': me.secondary_email,
       'timezone': me.timezone ?? 'Europe/Dublin'
     };
 
@@ -74,7 +75,8 @@ class ApiRepository {
       // JSON-Antwort in ein Dart-Objekt umwandeln
       return Me.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to set me data');
+      var lfDetail = json.decode(response.body)['detail'] as String;
+      throw Exception('Failed to set me data - $lfDetail');
     }
   }
 
@@ -91,7 +93,8 @@ class ApiRepository {
       // JSON-Antwort in ein Dart-Objekt umwandeln
       return;
     } else {
-      throw Exception('Failed to logout');
+      var lfDetail = json.decode(response.body)['detail'] as String;
+      throw Exception('Failed to logout - $lfDetail');
     }
   }
 }
